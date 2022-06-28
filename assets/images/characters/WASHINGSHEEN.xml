@@ -1,0 +1,3 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="WASHINGSHEEN.png"><SubTexture name="WASHINGSHEEN idle0000" x="0" y="0" width="504" height="650" frameX="-104" frameY="-24" frameWidth="700" frameHeight="700" />
+</TextureAtlas>
