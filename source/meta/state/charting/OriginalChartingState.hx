@@ -973,7 +973,7 @@ class OriginalChartingState extends MusicBeatState
 				stepperIsOppos.checkbox_dirty = true;
 			}
 		} catch (e) {
-			trace('fuck you, then, fuckin note ass');
+			trace('fuck you, then, fuckin note ass. ' + e);
 		}
 
 		updateGrid();
