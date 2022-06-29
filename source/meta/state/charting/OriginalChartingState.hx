@@ -552,6 +552,7 @@ class OriginalChartingState extends MusicBeatState
 					{
 						if (FlxG.keys.pressed.CONTROL)
 						{
+							trace('selection!');
 							selectNote(note);
 						}
 						else
@@ -956,15 +957,23 @@ class OriginalChartingState extends MusicBeatState
 			if (i.strumTime == note.strumTime && i.noteData % 4 == note.noteData)
 			{
 				curSelectedNote = _song.notes[curSection].sectionNotes[swagNum];
-				
-				// Just because this is annoying af
-				if (curSelectedNote.length > 3)
-					stepperIsOppos.checked = curSelectedNote[4];
-				else
-					stepperIsOppos.checked = false
 			}
 
 			swagNum += 1;
+		}
+		
+		// Just because this is annoying af
+		try {
+			if (curSelectedNote.length > 3) {
+				stepperIsOppos.checked = curSelectedNote[4];
+				stepperIsOppos.checkbox_dirty = true;
+			}
+			else {
+				stepperIsOppos.checked = false;
+				stepperIsOppos.checkbox_dirty = true;
+			}
+		} catch (e) {
+			trace('fuck you, then, fuckin note ass');
 		}
 
 		updateGrid();
@@ -1011,6 +1020,10 @@ class OriginalChartingState extends MusicBeatState
 		var noteSus = 0; // ninja you will NOT get away with this
 
 		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteOppos]);
+		
+		// Just because this is annoying af
+		stepperIsOppos.checked = false;
+		stepperIsOppos.checkbox_dirty = true;
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 
