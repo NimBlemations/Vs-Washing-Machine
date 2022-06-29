@@ -33,6 +33,7 @@ class Note extends FNFSprite
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
+	public var isOppose:Bool = false;
 
 	// only useful for charting stuffs
 	public var chartSustain:FlxSprite = null;
@@ -103,7 +104,7 @@ class Note extends FNFSprite
 
 		these are for all your custom note needs
 	**/
-	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
+	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote);
 
@@ -178,7 +179,7 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
+	public static function returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
 	{
 		var newNote:Note = new Note(strumTime, noteData, noteAlt, prevNote, isSustainNote);
 

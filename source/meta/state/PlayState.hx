@@ -724,9 +724,12 @@ class PlayState extends MusicBeatState
 				
 				strumline.allNotes.forEachAlive(function(daNote:Note)
 				{
+					// IF YOU WANT THE 'IF DOWNSCROLL' GO THROUGH VARIABLE 'noteScrollMultiplier'
+					// [(noteScrollMultiplier > 0) <= IF UPSCROLL] [(noteScrollMultiplier < 0) <= IF DOWNSCROLL]
+					var noteScrollMultiplier = (daNote.isOppose ? -downscrollMultiplier : downscrollMultiplier);
 					var roundedSpeed = FlxMath.roundDecimal(daNote.noteSpeed, 2);
 					var receptorPosY:Float = strumline.receptors.members[Math.floor(daNote.noteData)].y + Note.swagWidth / 6;
-					var psuedoY:Float = (downscrollMultiplier * -((Conductor.songPosition - daNote.strumTime) * (0.45 * roundedSpeed)));
+					var psuedoY:Float = (noteScrollMultiplier * -((Conductor.songPosition - daNote.strumTime) * (0.45 * roundedSpeed)));
 					var psuedoX = 25 + daNote.noteVisualOffset;
 
 					daNote.y = receptorPosY
@@ -743,10 +746,10 @@ class PlayState extends MusicBeatState
 					// shitty note hack I hate it so much
 					var center:Float = receptorPosY + Note.swagWidth / 2;
 					if (daNote.isSustainNote) {
-						daNote.y -= ((daNote.height / 2) * downscrollMultiplier);
+						daNote.y -= ((daNote.height / 2) * noteScrollMultiplier);
 						if ((daNote.animation.curAnim.name.endsWith('holdend')) && (daNote.prevNote != null)) {
-							daNote.y -= ((daNote.prevNote.height / 2) * downscrollMultiplier);
-							if (Init.trueSettings.get('Downscroll')) {
+							daNote.y -= ((daNote.prevNote.height / 2) * noteScrollMultiplier);
+							if (noteScrollMultiplier < 0) {
 								daNote.y += (daNote.height * 2);
 								if (daNote.endHoldOffset == Math.NEGATIVE_INFINITY) {
 									// set the end hold offset yeah I hate that I fix this like this
@@ -756,10 +759,10 @@ class PlayState extends MusicBeatState
 								else
 									daNote.y += daNote.endHoldOffset;
 							} else // this system is funny like that
-								daNote.y += ((daNote.height / 2) * downscrollMultiplier);
+								daNote.y += ((daNote.height / 2) * noteScrollMultiplier);
 						}
 						
-						if (Init.trueSettings.get('Downscroll'))
+						if (noteScrollMultiplier < 0)
 						{
 							daNote.flipY = true;
 							if ((daNote.parentNote != null && daNote.parentNote.wasGoodHit) 
@@ -840,8 +843,8 @@ class PlayState extends MusicBeatState
 					}
 
 					// if the note is off screen (above)
-					if ((((!Init.trueSettings.get('Downscroll')) && (daNote.y < -daNote.height))
-					|| ((Init.trueSettings.get('Downscroll')) && (daNote.y > (FlxG.height + daNote.height))))
+					if ((((noteScrollMultiplier > 0) && (daNote.y < -daNote.height))
+					|| ((noteScrollMultiplier < 0) && (daNote.y > (FlxG.height + daNote.height))))
 					&& (daNote.tooLate || daNote.wasGoodHit))
 						destroyNote(strumline, daNote);
 				});

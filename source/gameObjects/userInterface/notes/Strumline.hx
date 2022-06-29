@@ -199,6 +199,7 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
 		chosenGroup.add(newNote);
 		allNotes.add(newNote);
-		chosenGroup.sort(FlxSort.byY, (!Init.trueSettings.get('Downscroll')) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
+		var isDownscroll = Init.trueSettings.get('Downscroll');
+		chosenGroup.sort(FlxSort.byY, (!isDownscroll && !newNote.isOppose || isDownscroll && newNote.isOppose) ? FlxSort.DESCENDING : FlxSort.ASCENDING);
 	}
 }

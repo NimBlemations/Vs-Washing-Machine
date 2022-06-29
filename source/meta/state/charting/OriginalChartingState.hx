@@ -55,6 +55,8 @@ class OriginalChartingState extends MusicBeatState
 	var curSection:Int = 0;
 
 	var curNoteType:Int = 0;
+	
+	var curIsOppos:Bool = 0;
 
 	public static var lastSection:Int = 0;
 
@@ -337,6 +339,7 @@ class OriginalChartingState extends MusicBeatState
 
 	var stepperSusLength:FlxUINumericStepper;
 	var stepperType:FlxUINumericStepper;
+	var stepperIsOppos:FlxUICheckBox;
 
 	function addNoteUI():Void
 	{
@@ -359,9 +362,15 @@ class OriginalChartingState extends MusicBeatState
 		stepperType.name = 'note_type';
 
 		tab_group_note.add(stepperType);
+		
+		stepperIsOppos = new FlxUICheckBox(10, 50, null, null, 'Is Oppose', 100);
+		stepperIsOppos.name = 'is_oppose';
+		
+		tab_group_note.add(stepperIsOppos);
 
 		UI_box.addGroup(tab_group_note);
 		// I'm genuinely tempted to go around and remove every instance of the word "sus" it is genuinely killing me inside
+		// SUSSY AMONG US BALLS!!11!!!!!1!1
 	}
 
 	var songMusic:FlxSound;
@@ -441,6 +450,8 @@ class OriginalChartingState extends MusicBeatState
 					FlxG.log.add('changed bpm shit');
 				case "Alt Animation":
 					_song.notes[curSection].altAnim = check.checked;
+				case "Is Oppose":
+					curSelectedNote[4] = check.checked;
 			}
 		}
 		else if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
@@ -888,12 +899,16 @@ class OriginalChartingState extends MusicBeatState
 			var daNoteInfo = i[1];
 			var daStrumTime = i[0];
 			var daSus = i[2];
+			var daOppos:Bool = false
 			var daNoteType = 0;
 
 			if (i.length > 2)
 				daNoteType = i[3];
+			
+			if (i.length > 3)
+				daOppos = i[4];
 
-			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, daNoteType, 0);
+			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, daNoteType, 0, isOppos = daOppos);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
@@ -981,15 +996,16 @@ class OriginalChartingState extends MusicBeatState
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteType = curNoteType; // define notes as the current type
+		var noteOppos = false;
 		var noteSus = 0; // ninja you will NOT get away with this
 
-		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType]);
+		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteOppos]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 
 		if (FlxG.keys.pressed.CONTROL)
 		{
-			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType]);
+			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType, noteOppos]);
 		}
 
 		trace(noteStrum);
