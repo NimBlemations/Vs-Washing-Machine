@@ -56,7 +56,7 @@ class OriginalChartingState extends MusicBeatState
 
 	var curNoteType:Int = 0;
 	
-	var curIsOppos:Bool = 0;
+	var curIsOppos:Bool = false;
 
 	public static var lastSection:Int = 0;
 
@@ -451,7 +451,12 @@ class OriginalChartingState extends MusicBeatState
 				case "Alt Animation":
 					_song.notes[curSection].altAnim = check.checked;
 				case "Is Oppose":
-					curSelectedNote[4] = check.checked;
+					// The game crashes if you don't do this catch lol
+					try {
+						curSelectedNote[4] = check.checked;
+					} catch (e) {
+						trace("Note does not have!!! " + e);
+					}
 			}
 		}
 		else if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
@@ -899,7 +904,7 @@ class OriginalChartingState extends MusicBeatState
 			var daNoteInfo = i[1];
 			var daStrumTime = i[0];
 			var daSus = i[2];
-			var daOppos:Bool = false
+			var daOppos:Bool = false;
 			var daNoteType = 0;
 
 			if (i.length > 2)
@@ -908,7 +913,7 @@ class OriginalChartingState extends MusicBeatState
 			if (i.length > 3)
 				daOppos = i[4];
 
-			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, daNoteType, 0, isOppos = daOppos);
+			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, daNoteType, 0, daOppos);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
@@ -951,6 +956,12 @@ class OriginalChartingState extends MusicBeatState
 			if (i.strumTime == note.strumTime && i.noteData % 4 == note.noteData)
 			{
 				curSelectedNote = _song.notes[curSection].sectionNotes[swagNum];
+				
+				// Just because this is annoying af
+				if (curSelectedNote.length > 3)
+					stepperIsOppos.checked = curSelectedNote[4];
+				else
+					stepperIsOppos.checked = false
 			}
 
 			swagNum += 1;
