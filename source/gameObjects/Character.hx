@@ -144,6 +144,13 @@ class Character extends FNFSprite
 
 				playAnim('idle');
 			
+			case 'washeen-old':
+				frames = Paths.getSparrowAtlas('characters/WASHINGSHEEN_old');
+				
+				animation.addByPrefix('idle', 'WASHINGSHEEN idle', 6);
+				
+				playAnim('idle');
+			
 			case 'washeen':
 				frames = Paths.getSparrowAtlas('characters/WASHINGSHEEN');
 				

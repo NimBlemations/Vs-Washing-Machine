@@ -1,0 +1,17 @@
+{
+    "box": "speech_bubble_talking",
+    "boxState": "normal",
+    "dialogue": [
+        {
+            "portrait": "bf",
+            "expression": "normal",
+            "text": "Ah fuck, I'm bored"
+        },
+		{
+			"text": "......"
+		},
+		{
+			"text": "Screw it, time to rap battle \na washing machine."
+		}
+    ]
+}
