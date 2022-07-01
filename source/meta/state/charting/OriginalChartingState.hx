@@ -57,6 +57,8 @@ class OriginalChartingState extends MusicBeatState
 	var curNoteType:Int = 0;
 	
 	var curIsOppos:Bool = false;
+	
+	var curDirectionOverride:Int = 0;
 
 	public static var lastSection:Int = 0;
 
@@ -340,6 +342,7 @@ class OriginalChartingState extends MusicBeatState
 	var stepperSusLength:FlxUINumericStepper;
 	var stepperType:FlxUINumericStepper;
 	var stepperIsOppos:FlxUICheckBox;
+	var stepperDirectionOverride:FlxUINumericStepper;
 
 	function addNoteUI():Void
 	{
@@ -367,6 +370,12 @@ class OriginalChartingState extends MusicBeatState
 		stepperIsOppos.name = 'is_oppose';
 		
 		tab_group_note.add(stepperIsOppos);
+		
+		stepperDirectionOverride = new FlxUINumericStepper(10, 70, 1, 0, 0, 4);
+		stepperDirectionOverride.value = 0;
+		stepperDirectionOverride.name = 'note_dirOverride';
+		
+		tab_group_note.add(stepperDirectionOverride);
 
 		UI_box.addGroup(tab_group_note);
 		// I'm genuinely tempted to go around and remove every instance of the word "sus" it is genuinely killing me inside
@@ -482,6 +491,9 @@ class OriginalChartingState extends MusicBeatState
 				case 'note_type':
 					curNoteType = Std.int(nums.value); // oh yeah dont forget this has to be an integer
 				// set the new note type for when placing notes next!
+				case 'note_dirOverride':
+					curSelectedNote[5] = nums.value;
+					curDirectionOverride = Std.int(nums.value);
 				case 'section_bpm':
 					_song.notes[curSection].bpm = Std.int(nums.value); // redefine the section's bpm
 					updateGrid(); // update the note grid
@@ -853,8 +865,24 @@ class OriginalChartingState extends MusicBeatState
 
 	function updateNoteUI():Void
 	{
-		if (curSelectedNote != null)
+		if (curSelectedNote != null) {
 			stepperSusLength.value = curSelectedNote[2];
+			
+			// Just because this is annoying af
+			try {
+				stepperIsOppos.checked = curSelectedNote[4];
+			} catch (e) {
+				trace('fuck you, then, fuckin note ass. ' + e);
+				stepperIsOppos.checked = false;
+			}
+			
+			try {
+				stepperDirectionOverride.value = curSelectedNote[5];
+			} catch (e) {
+				trace(e);
+				stepperDirectionOverride.value = 0;
+			}
+		}
 	}
 
 	function updateGrid():Void
@@ -906,6 +934,7 @@ class OriginalChartingState extends MusicBeatState
 			var daStrumTime = i[0];
 			var daSus = i[2];
 			var daOppos:Bool = false;
+			var daDirectionOverride:Int = 0;
 			var daNoteType = 0;
 
 			if (i.length > 2)
@@ -913,8 +942,11 @@ class OriginalChartingState extends MusicBeatState
 			
 			if (i.length > 3)
 				daOppos = i[4];
+			
+			if (i.length > 4)
+				daDirectionOverride = i[5];
 
-			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, daNoteType, 0, daOppos);
+			var note:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteInfo % 4, daNoteType, 0, daOppos, daDirectionOverride);
 			note.sustainLength = daSus;
 			note.noteType = daNoteType;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
@@ -974,20 +1006,6 @@ class OriginalChartingState extends MusicBeatState
 
 			swagNum += 1;
 		}
-		
-		// Just because this is annoying af
-		try {
-			if (curSelectedNote.length > 3) {
-				stepperIsOppos.checked = curSelectedNote[4];
-				stepperIsOppos.checkbox_dirty = true;
-			}
-			else {
-				stepperIsOppos.checked = false;
-				stepperIsOppos.checkbox_dirty = true;
-			}
-		} catch (e) {
-			trace('fuck you, then, fuckin note ass. ' + e);
-		}
 
 		updateGrid();
 		updateNoteUI();
@@ -1030,19 +1048,16 @@ class OriginalChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteType = curNoteType; // define notes as the current type
 		var noteOppos = false;
+		var noteDirOverride = 0;
 		var noteSus = 0; // ninja you will NOT get away with this
 
-		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteOppos]);
-		
-		// Just because this is annoying af
-		stepperIsOppos.checked = false;
-		stepperIsOppos.checkbox_dirty = true;
+		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, noteOppos, noteDirOverride]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 
 		if (FlxG.keys.pressed.CONTROL)
 		{
-			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType, noteOppos]);
+			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteType, noteOppos, noteDirOverride]);
 		}
 
 		trace(noteStrum);

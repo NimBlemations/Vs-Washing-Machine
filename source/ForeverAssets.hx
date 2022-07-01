@@ -234,15 +234,15 @@ class ForeverAssets
 	/**
 		Notes!
 	**/
-	public static function generateArrow(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
+	public static function generateArrow(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?directionOverride:Int = 0, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
 	{
 		var newNote:Note;
 		var changeableSkin:String = Init.trueSettings.get("Note Skin");
 		// gonna improve the system eventually
 		if (changeableSkin.startsWith('quant'))
-			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, isOppos, isSustainNote, prevNote);
+			newNote = Note.returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, isOppos, directionOverride, isSustainNote, prevNote);
 		else
-			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, isOppos, isSustainNote, prevNote);
+			newNote = Note.returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, isOppos, directionOverride, isSustainNote, prevNote);
 
 		// hold note shit 
 		if (isSustainNote && prevNote != null) {

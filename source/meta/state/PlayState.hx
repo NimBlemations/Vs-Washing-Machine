@@ -959,7 +959,7 @@ class PlayState extends MusicBeatState
 		var stringArrow:String = '';
 		var altString:String = '';
 
-		var baseString = 'sing' + UIStaticArrow.getArrowFromNumber(coolNote.noteData).toUpperCase();
+		var baseString = 'sing' + UIStaticArrow.getArrowFromNumber(coolNote.directionOverride == 0 ? coolNote.noteData : (coolNote.directionOverride - 1)).toUpperCase();
 
 		// I tried doing xor and it didnt work lollll
 		if (coolNote.noteAlt > 0)

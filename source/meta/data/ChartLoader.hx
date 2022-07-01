@@ -42,12 +42,15 @@ class ChartLoader
 						// define the note's animation (in accordance to the original game)!
 						var daNoteAlt:Float = 0;
 						var daNoteOppos:Bool = false;
+						var daNoteDirectionOverride:Int = 0;
 
 						// very stupid but I'm lazy
 						if (songNotes.length > 2)
 							daNoteAlt = songNotes[3];
 						if (songNotes.length > 3)
 							daNoteOppos = songNotes[4];
+						if (songNotes.length > 4)
+							daNoteDirectionOverride = songNotes[5];
 						/*
 							rest of this code will be mostly unmodified, I don't want to interfere with how FNF chart loading works
 							I'll keep all of the extra features in forever charts, which you'll be able to convert and export to very easily using
@@ -71,7 +74,7 @@ class ChartLoader
 							oldNote = null;
 
 						// create the new note
-						var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, 0, daNoteAlt, daNoteOppos);
+						var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, 0, daNoteAlt, daNoteOppos, daNoteDirectionOverride);
 						// set note speed
 						swagNote.noteSpeed = songData.speed;
 
@@ -90,7 +93,7 @@ class ChartLoader
 						{
 							oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 							var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-								daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, 0, daNoteAlt, daNoteOppos, true, oldNote);
+								daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, 0, daNoteAlt, daNoteOppos, daNoteDirectionOverride, true, oldNote);
 							sustainNote.scrollFactor.set();
 
 							unspawnNotes.push(sustainNote);

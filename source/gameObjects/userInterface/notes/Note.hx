@@ -34,6 +34,8 @@ class Note extends FNFSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var isOppose:Bool = false;
+	// Lol the receiver animates a different direction
+	public var directionOverride:Int = 0;
 
 	// only useful for charting stuffs
 	public var chartSustain:FlxSprite = null;
@@ -52,7 +54,7 @@ class Note extends FNFSprite
 	// it has come to this.
 	public var endHoldOffset:Float = Math.NEGATIVE_INFINITY;
 
-	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?isOppos:Bool = false, ?prevNote:Note, ?sustainNote:Bool = false)
+	public function new(strumTime:Float, noteData:Int, noteAlt:Float, ?isOppos:Bool = false, ?directionOverride:Int = 0, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super(x, y);
 
@@ -63,6 +65,7 @@ class Note extends FNFSprite
 		isSustainNote = sustainNote;
 		
 		this.isOppose = isOppos;
+		this.directionOverride = directionOverride;
 
 		// oh okay I know why this exists now
 		y -= 2000;
@@ -106,9 +109,9 @@ class Note extends FNFSprite
 
 		these are for all your custom note needs
 	**/
-	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
+	public static function returnDefaultNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?directionOverride:Int = 0, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
 	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, isOppos, prevNote, isSustainNote);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, isOppos, directionOverride, prevNote, isSustainNote);
 		
 		// frames originally go here
 		switch (assetModifier)
@@ -181,9 +184,9 @@ class Note extends FNFSprite
 		return newNote;
 	}
 
-	public static function returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
+	public static function returnQuantNote(assetModifier, strumTime, noteData, noteType, noteAlt, ?isOppos:Bool = false, ?directionOverride:Int = 0, ?isSustainNote:Bool = false, ?prevNote:Note = null):Note
 	{
-		var newNote:Note = new Note(strumTime, noteData, noteAlt, isOppos, prevNote, isSustainNote);
+		var newNote:Note = new Note(strumTime, noteData, noteAlt, isOppos, directionOverride, prevNote, isSustainNote);
 		
 		// actually determine the quant of the note
 		if (newNote.noteQuant == -1)
