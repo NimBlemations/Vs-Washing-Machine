@@ -1,17 +1,17 @@
 {
-    "box": "speech_bubble_talking",
-    "boxState": "normal",
-    "dialogue": [
-        {
-            "portrait": "bf",
-            "expression": "normal",
-            "text": "Damn... I'm kinda going insane."
-        },
+	"box": "speech_bubble_talking",
+	"boxState": "normal",
+	"dialogue": [
+		{
+			"portrait": "bf",
+			"expression": "normal",
+			"text": "Damn... I'm kinda going insane."
+		},
 		{
 			"text": "...Still nothing else to do."
 		},
 		{
 			"text": "Well, I suppose this wouldn't \naffect me much, I'll go again."
 		}
-    ]
+	]
 }
