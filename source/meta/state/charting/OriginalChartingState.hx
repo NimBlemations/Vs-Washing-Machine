@@ -954,8 +954,10 @@ class OriginalChartingState extends MusicBeatState
 
 		for (i in _song.notes[curSection].sectionNotes)
 		{
-			// Yall dumb, this was a fuckin array
+			// Yall dumb, this was a fuckin array /j
+			#if debug
 			trace(i);
+			#end
 			if (i[0] == note.strumTime && i[1] % 4 == note.noteData)
 			{
 				curSelectedNote = _song.notes[curSection].sectionNotes[swagNum];

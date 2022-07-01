@@ -157,7 +157,7 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 		{
 			var coolSwaggy = CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase());
 			// Am laziii (IT WORKS!)
-			var staticArrow:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + x, 25 + (coolSwaggy == 'what-the-fuck' ? (FlxG.height / 4) : (downscroll ? FlxG.height - 200 : 0)), i, PlayState.assetModifier);
+			var staticArrow:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + x, 25 + (coolSwaggy == 'what-the-fuck' ? (FlxG.height / 3) : (downscroll ? FlxG.height - 200 : 0)), i, PlayState.assetModifier);
 			staticArrow.ID = i;
 
 			staticArrow.x -= ((keyAmount / 2) * Note.swagWidth);

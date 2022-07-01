@@ -1,0 +1,23 @@
+{
+	"box": "speech_bubble_talking",
+	"boxState": "normal",
+	"dialogue": [
+		{
+			"portrait": "bf",
+			"expression": "normal",
+			"text": "Wella wella wella...."
+		},
+		{
+			"text": "gheheheoa hehe washy machine...."
+		},
+		{
+			"text": "I'm gonna weeeenn...."
+		},
+		{
+			"text": "IT's oN, it'S sO on !!"
+		},
+		{
+			"text": "I'M GOiNG TO AbSoLUTely HuMILIaTE YOu!"
+		}
+	]
+}
