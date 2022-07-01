@@ -10,6 +10,7 @@ import flixel.math.FlxRect;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
+import meta.CoolUtil;
 import meta.data.Conductor;
 import meta.data.Timings;
 import meta.state.PlayState;
@@ -154,7 +155,9 @@ class Strumline extends FlxTypedGroup<FlxBasic>
 
 		for (i in 0...keyAmount)
 		{
-			var staticArrow:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + x, 25 + (downscroll ? FlxG.height - 200 : 0), i, PlayState.assetModifier);
+			var coolSwaggy = CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase());
+			// Am laziii (IT WORKS!)
+			var staticArrow:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + x, 25 + (coolSwaggy == 'what-the-fuck' ? (FlxG.height / 4) : (downscroll ? FlxG.height - 200 : 0)), i, PlayState.assetModifier);
 			staticArrow.ID = i;
 
 			staticArrow.x -= ((keyAmount / 2) * Note.swagWidth);
