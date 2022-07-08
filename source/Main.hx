@@ -149,7 +149,7 @@ class Main extends Sprite
 		// addChild(new FPS(10, 3, 0xFFFFFF));
 
 		// begin the discord rich presence
-		#if !html5
+		#if (!html5 && !neko)
 		Discord.initializeRPC();
 		Discord.changePresence('');
 		#end

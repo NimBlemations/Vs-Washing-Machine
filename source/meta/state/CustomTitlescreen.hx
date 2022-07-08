@@ -69,7 +69,7 @@ class CustomTitlescreen extends MusicBeatState
 		if (!initialized)
 		{
 			///*
-			#if !html5
+			#if (!html5 && !neko)
 			Discord.changePresence('TITLE SCREEN', 'Main Menu');
 			#end
 
