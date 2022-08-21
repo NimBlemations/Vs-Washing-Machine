@@ -261,14 +261,18 @@ class Paths
 		return file;
 	}
 
-	inline static public function voices(song:String):Any {
-		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Voices';
+	inline static public function voices(song:String, ?diff:String = ''):Any {
+		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Voices' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT', SOUND)) ? '-$diff' : '');
+		#if debug
+		var theoreticalPath = 'songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT';
+		trace('Loading $songKey (Difficulty ${diff.toLowerCase()}), path may be $theoreticalPath and the result is ${FileSystem.exists(theoreticalPath)}');
+		#end
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
 
-	inline static public function inst(song:String):Any	{
-		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Inst';
+	inline static public function inst(song:String, ?diff:String = ''):Any	{
+		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Inst' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Inst-${diff}.$SOUND_EXT', SOUND)) ? '-$diff' : '');
 		var inst = returnSound('songs', songKey);
 		return inst;
 	}

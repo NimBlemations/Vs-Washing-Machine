@@ -162,9 +162,9 @@ class FreeplayState extends MusicBeatState
 		///*
 		var coolDifficultyArray = [];
 		for (i in CoolUtil.difficultyArray)
-			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
-				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
-				coolDifficultyArray.push(i);
+			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i.toUpperCase()))
+				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i.toUpperCase() == "NORMAL"))
+				coolDifficultyArray.push(i.toUpperCase());
 
 		if (coolDifficultyArray.length > 0)
 		{ //*/
@@ -226,10 +226,10 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
-				CoolUtil.difficultyArray.indexOf(existingDifficulties[curSelected][curDifficulty]));
+			var formim:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
+				CoolUtil.difficultyArray.indexOf(CoolUtil.stringGrammatic(existingDifficulties[curSelected][curDifficulty])));
 
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			PlayState.SONG = Song.loadFromJson(formim, songs[curSelected].songName.toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 

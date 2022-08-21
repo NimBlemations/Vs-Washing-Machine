@@ -12,12 +12,27 @@ import sys.FileSystem;
 class CoolUtil
 {
 	// tymgus45
-	public static var difficultyArray:Array<String> = ['EASY', "NORMAL", "HARD"];
+	public static var difficultyArray:Array<String> = ['Easy', "Normal"];
 	public static var difficultyLength = difficultyArray.length;
 
 	public static function difficultyFromNumber(number:Int):String
 	{
 		return difficultyArray[number];
+	}
+	
+	public static function stringGrammatic(string:String):String
+	{
+		trace('unsafe string construct i guess');
+		var changedString:String = '';
+		var stringArray:Array<String> = [];
+		for (i in 0...string.length) {
+			stringArray.push(string.toLowerCase().charAt(i));
+		}
+		stringArray[0] = string.toUpperCase().charAt(0);
+		for (i in 0...string.length) {
+			changedString = changedString + stringArray[i];
+		}
+		return changedString;
 	}
 
 	public static function dashToSpace(string:String):String

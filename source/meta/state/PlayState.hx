@@ -55,7 +55,7 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
-	public static var storyDifficulty:Int = 2;
+	public static var storyDifficulty:Int = 1;
 
 	public static var songMusic:FlxSound;
 	public static var vocals:FlxSound;
@@ -1355,7 +1355,7 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(songData.bpm);
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' - ' + CoolUtil.difficultyFromNumber(storyDifficulty);
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' - ' + CoolUtil.difficultyFromNumber(storyDifficulty).toUpperCase();
 
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + songDetails;
@@ -1367,10 +1367,10 @@ class PlayState extends MusicBeatState
 		updateRPC(false);
 
 		curSong = songData.song;
-		songMusic = new FlxSound().loadEmbedded(Paths.inst(SONG.song), false, true);
+		songMusic = new FlxSound().loadEmbedded(Paths.inst(SONG.song, CoolUtil.difficultyFromNumber(storyDifficulty)), false, true);
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song), false, true);
+			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song, CoolUtil.difficultyFromNumber(storyDifficulty)), false, true);
 		else
 			vocals = new FlxSound();
 
