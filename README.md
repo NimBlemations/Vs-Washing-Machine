@@ -3,7 +3,7 @@ Very cool, feels like the only engine that is not Psych Engine.
 This engine is not used enough, seriously, even for coding purposes.
 Goddammit Psych Engine.
 ## This mod has 2 cool mechanics
-cool mechanics, that's it.
+Cool mechanics, that's it.
 ----------------------------------------------
 # [Forever Engine](https://github.com/Yoshubs/FunkinForever)
 An open-source, quality of life and performance driven [Friday Night Funkin'](https://www.newgrounds.com/portal/view/770371) mod engine!

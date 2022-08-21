@@ -151,8 +151,13 @@ class Paths
 	public static function returnSound(path:String, key:String, ?library:String) {
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		#if debug
+		trace(gottenPath);
+		#end
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		// trace(gottenPath);
+		#if debug
+		trace('aftermath ' + gottenPath);
+		#end
 		if (!currentTrackedSounds.exists(gottenPath))
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
 		localTrackedAssets.push(key);
@@ -262,9 +267,9 @@ class Paths
 	}
 
 	inline static public function voices(song:String, ?diff:String = ''):Any {
-		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Voices' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT', SOUND)) ? '-$diff' : '');
+		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Voices' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT', SOUND)) ? ' $diff' : '');
 		#if debug
-		var theoreticalPath = 'songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT';
+		var theoreticalPath = getPath('songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT', SOUND);
 		trace('Loading $songKey (Difficulty ${diff.toLowerCase()}), path may be $theoreticalPath and the result is ${FileSystem.exists(theoreticalPath)}');
 		#end
 		var voices = returnSound('songs', songKey);
@@ -272,7 +277,7 @@ class Paths
 	}
 
 	inline static public function inst(song:String, ?diff:String = ''):Any	{
-		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Inst' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Inst-${diff}.$SOUND_EXT', SOUND)) ? '-$diff' : '');
+		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Inst' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Inst-${diff}.$SOUND_EXT', SOUND)) ? ' $diff' : '');
 		var inst = returnSound('songs', songKey);
 		return inst;
 	}
