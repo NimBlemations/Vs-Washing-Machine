@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.util.FlxColor;
 import gameObjects.userInterface.HealthIcon;
 import meta.*;
 import meta.data.*;
@@ -36,11 +37,15 @@ class Character extends FNFSprite
 
 	public var characterData:CharacterData;
 	public var adjustPos:Bool = true;
+	
+	public var barColor:FlxColor;
 
 	public function new(?isPlayer:Bool = false)
 	{
 		super(x, y);
 		this.isPlayer = isPlayer;
+		
+		barColor = isPlayer ? 0xFFFF0000 : 0xFF66FF33;
 	}
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
@@ -156,6 +161,8 @@ class Character extends FNFSprite
 				
 				animation.addByPrefix('idle', 'WASHINGSHEEN idle', 6);
 				
+				barColor = 0xFF808080;
+				
 				playAnim('idle');
 			
 			case 'spooky':
@@ -269,6 +276,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 
@@ -322,6 +331,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 
@@ -349,6 +360,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('hey', 'BF HEY', 24, false);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 			case 'bf-car':
@@ -366,6 +379,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 			case 'bf-pixel':
@@ -389,6 +404,8 @@ class Character extends FNFSprite
 				height -= 100;
 
 				antialiasing = false;
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 			case 'bf-pixel-dead':

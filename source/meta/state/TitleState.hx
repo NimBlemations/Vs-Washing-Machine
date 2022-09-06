@@ -52,6 +52,8 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		Conductor.changeBPM(88); // Because of new menu music
+		
 		controls.setKeyboardScheme(None, false);
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 		super.create();
