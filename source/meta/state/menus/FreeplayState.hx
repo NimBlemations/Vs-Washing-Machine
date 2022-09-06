@@ -47,6 +47,7 @@ class FreeplayState extends MusicBeatState
 	var songToPlay:Sound = null;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
+	private var tagLines:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
 	private var iconArray:Array<HealthIcon> = [];
@@ -107,15 +108,29 @@ class FreeplayState extends MusicBeatState
 		// LOAD CHARACTERS
 		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
 		add(bg);
-
+		
+		tagLines = new FlxTypedGroup<Alphabet>();
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
+		add(tagLines);
+		
+		var tagAmount:Int = 0;
+		var tagWeek:Int = 0;
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
+			if (tagWeek != songs[i].week) // Tryna make it look cool, so that later I could prob add "secrets" or "joke" and etc.
+			{
+				tagWeek = songs[i].week;
+				var tagText:Alphabet = new Alphabet(0, (70 * (i + tagAmount)) + 30, 'Week ' + tagWeek);
+				tagText.isMenuItem = true;
+				tagText.targetY = i + tagAmount;
+				++tagAmount;
+				tagLines.add(tagText);
+			}
+			var songText:Alphabet = new Alphabet(0, (70 * (i + tagAmount)) + 30, songs[i].songName, true, false);
 			songText.isMenuItem = true;
-			songText.targetY = i;
+			songText.targetY = i + tagAmount;
 			grpSongs.add(songText);
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
@@ -318,7 +333,7 @@ class FreeplayState extends MusicBeatState
 
 		for (item in grpSongs.members)
 		{
-			item.targetY = bullShit - curSelected;
+			item.targetY = ((item.initY - 30) / 70) - ((grpSongs.members[curSelected].initY - 30) / 70);
 			bullShit++;
 
 			item.alpha = 0.6;
@@ -329,6 +344,11 @@ class FreeplayState extends MusicBeatState
 				item.alpha = 1;
 				// item.setGraphicSize(Std.int(item.width));
 			}
+		}
+		
+		for (desc in tagLines.members)
+		{
+			desc.targetY = ((desc.initY - 30) / 70) - ((grpSongs.members[curSelected].initY - 30) / 70);
 		}
 		//
 

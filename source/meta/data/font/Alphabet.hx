@@ -26,6 +26,7 @@ class Alphabet extends FlxSpriteGroup
 
 	// for menu shit
 	public var targetY:Float = 0;
+	public var initY:Float = 0; // Look I'm at the fucking line here
 	public var disableX:Bool = false;
 	public var controlGroupID:Int = 0;
 	public var extensionJ:Int = 0;
@@ -66,6 +67,8 @@ class Alphabet extends FlxSpriteGroup
 	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false, ?textSize:Float = 1)
 	{
 		super(x, y);
+		
+		initY = y;
 
 		this.text = text;
 		isBold = bold;

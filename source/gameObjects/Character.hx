@@ -45,7 +45,7 @@ class Character extends FNFSprite
 		super(x, y);
 		this.isPlayer = isPlayer;
 		
-		barColor = isPlayer ? 0xFFFF0000 : 0xFF66FF33;
+		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
 	}
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
@@ -161,7 +161,7 @@ class Character extends FNFSprite
 				
 				animation.addByPrefix('idle', 'WASHINGSHEEN idle', 6);
 				
-				barColor = 0xFF808080;
+				barColor = 0xFF747474;
 				
 				playAnim('idle');
 			
@@ -237,21 +237,10 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', "Pico Idle Dance", 24, false);
 				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
 				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
-				if (isPlayer)
-				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
-				}
-				else
-				{
-					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
-				}
+				animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
 
 				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
 				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
@@ -405,7 +394,7 @@ class Character extends FNFSprite
 
 				antialiasing = false;
 				
-				barColor = 0xFF31b0d1;
+				barColor = 0xFF7bd6f6;
 
 				flipX = true;
 			case 'bf-pixel-dead':
@@ -509,7 +498,7 @@ class Character extends FNFSprite
 					}
 				}
 				else 
-					return setCharacter(x, y, 'bf'); 					
+					return setCharacter(x, y, 'bf');
 		}
 
 		// set up offsets cus why not
@@ -526,15 +515,9 @@ class Character extends FNFSprite
 		dance();
 
 		if (isPlayer) // fuck you ninjamuffin lmao
-		{
 			flipX = !flipX;
-
-			// Doesn't flip for BF, since his are already in the right place???
-			if (!curCharacter.startsWith('bf'))
-				flipLeftRight();
-			//
-		}
-		else if (curCharacter.startsWith('bf'))
+		
+		if (flipX)
 			flipLeftRight();
 
 		if (adjustPos) {
