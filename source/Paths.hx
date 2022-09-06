@@ -114,7 +114,7 @@ class Paths
 		localTrackedAssets = [];
 	}
 
-	public static function returnGraphic(key:String, ?library:String, ?textureCompression:Bool = false)
+	public static function returnGraphic(key:String, ?library:String, ?textureCompression:Bool = true)
 	{
 		var path = getPath('images/$key.png', IMAGE, library);
 		if (FileSystem.exists(path))
@@ -151,13 +151,7 @@ class Paths
 	public static function returnSound(path:String, key:String, ?library:String) {
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
-		#if debug
-		trace(gottenPath);
-		#end
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		#if debug
-		trace('aftermath ' + gottenPath);
-		#end
 		if (!currentTrackedSounds.exists(gottenPath))
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
 		localTrackedAssets.push(key);
@@ -268,10 +262,6 @@ class Paths
 
 	inline static public function voices(song:String, ?diff:String = ''):Any {
 		var songKey:String = '${CoolUtil.swapSpaceDash(song.toLowerCase())}/Voices' + (FileSystem.exists(getPath('songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT', SOUND)) ? ' $diff' : '');
-		#if debug
-		var theoreticalPath = getPath('songs/${song.toLowerCase()}/Voices-${diff}.$SOUND_EXT', SOUND);
-		trace('Loading $songKey (Difficulty ${diff.toLowerCase()}), path may be $theoreticalPath and the result is ${FileSystem.exists(theoreticalPath)}');
-		#end
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
@@ -282,7 +272,7 @@ class Paths
 		return inst;
 	}
 
-	inline static public function image(key:String, ?library:String, ?textureCompression:Bool = false) {
+	inline static public function image(key:String, ?library:String, ?textureCompression:Bool = true) {
 		var returnAsset:FlxGraphic = returnGraphic(key, library, textureCompression);
 		return returnAsset;
 	}

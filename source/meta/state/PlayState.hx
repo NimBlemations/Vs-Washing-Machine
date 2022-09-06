@@ -1355,7 +1355,7 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(songData.bpm);
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
-		songDetails = CoolUtil.dashToSpace(SONG.song) + ' - ' + CoolUtil.difficultyFromNumber(storyDifficulty).toUpperCase();
+		songDetails = CoolUtil.dashToSpace(SONG.song) + ' - ' + CoolUtil.difficultyFromNumber(storyDifficulty);
 
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + songDetails;
@@ -1367,10 +1367,10 @@ class PlayState extends MusicBeatState
 		updateRPC(false);
 
 		curSong = songData.song;
-		songMusic = new FlxSound().loadEmbedded(Paths.inst(SONG.song, CoolUtil.difficultyFromNumber(storyDifficulty)), false, true);
+		songMusic = new FlxSound().loadEmbedded(Paths.inst(SONG.song, CoolUtil.stringGrammatic(CoolUtil.difficultyFromNumber(storyDifficulty))), false, true);
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song, CoolUtil.difficultyFromNumber(storyDifficulty)), false, true);
+			vocals = new FlxSound().loadEmbedded(Paths.voices(SONG.song, CoolUtil.stringGrammatic(CoolUtil.difficultyFromNumber(storyDifficulty))), false, true);
 		else
 			vocals = new FlxSound();
 
