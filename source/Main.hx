@@ -52,7 +52,7 @@ class Main extends Sprite
 		this system will eventually be overhauled in favor of using actual week folders within the 
 		assets.
 		Enough of that, here's how it works
-		[ [songs to use], [characters in songs], [color of week], name of week ]
+		[ [songs to use], [characters in songs], [color of week], name of week, freeplay label (optional) ]
 	**/
 	public static var gameWeeks:Array<Dynamic> = [
 		[['Tutorial'], ['gf'], [FlxColor.fromRGB(129, 100, 223)], 'Funky Beginnings'],
@@ -60,7 +60,8 @@ class Main extends Sprite
 			['Cleaning', 'High-On-Suds', 'What-The-Fuck'],
 			['washeen'],
 			[FlxColor.fromRGB(200, 200, 220)],
-			'vs. washing machine?'
+			'vs. washing machine?',
+			'Main Week'
 		],
 		[
 			['Spookeez', 'South', 'Monster'],

@@ -76,7 +76,7 @@ class FreeplayState extends MusicBeatState
 		///*
 		for (i in 0...Main.gameWeeks.length)
 		{
-			addWeek(Main.gameWeeks[i][0], i, Main.gameWeeks[i][1], Main.gameWeeks[i][2]);
+			addWeek(Main.gameWeeks[i][0], i, Main.gameWeeks[i][1], Main.gameWeeks[i][2], (Main.gameWeeks[i][4] != null ? Main.gameWeeks[i][4] : ""));
 			for (j in cast(Main.gameWeeks[i][0], Array<Dynamic>))
 				existingSongs.push(j.toLowerCase());
 		}
@@ -122,7 +122,10 @@ class FreeplayState extends MusicBeatState
 			if (tagWeek != songs[i].week) // Tryna make it look cool, so that later I could prob add "secrets" or "joke" and etc.
 			{
 				tagWeek = songs[i].week;
-				var tagText:Alphabet = new Alphabet(0, (70 * (i + tagAmount)) + 30, 'Week ' + tagWeek);
+				var tagString:String = 'Week ' + tagWeek;
+				if (songs[i].tagLine.length > 0)
+					tagString = songs[i].tagLine;
+				var tagText:Alphabet = new Alphabet(0, (70 * (i + tagAmount)) + 30, tagString);
 				tagText.isMenuItem = true;
 				tagText.targetY = i + tagAmount;
 				++tagAmount;
@@ -172,7 +175,7 @@ class FreeplayState extends MusicBeatState
 		// add(selector);
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor)
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, songColor:FlxColor, ?tagLine:String)
 	{
 		///*
 		var coolDifficultyArray = [];
@@ -183,12 +186,12 @@ class FreeplayState extends MusicBeatState
 
 		if (coolDifficultyArray.length > 0)
 		{ //*/
-			songs.push(new SongMetadata(songName, weekNum, songCharacter, songColor));
+			songs.push(new SongMetadata(songName, weekNum, songCharacter, songColor, tagLine));
 			existingDifficulties.push(coolDifficultyArray);
 		}
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?songColor:Array<FlxColor>)
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?songColor:Array<FlxColor>, ?tagLine:String)
 	{
 		if (songCharacters == null)
 			songCharacters = ['bf'];
@@ -198,7 +201,7 @@ class FreeplayState extends MusicBeatState
 		var num:Array<Int> = [0, 0];
 		for (song in songs)
 		{
-			addSong(song, weekNum, songCharacters[num[0]], songColor[num[1]]);
+			addSong(song, weekNum, songCharacters[num[0]], songColor[num[1]], tagLine);
 
 			if (songCharacters.length != 1)
 				num[0]++;
@@ -411,12 +414,14 @@ class SongMetadata
 	public var week:Int = 0;
 	public var songCharacter:String = "";
 	public var songColor:FlxColor = FlxColor.WHITE;
+	public var tagLine:String = "";
 
-	public function new(song:String, week:Int, songCharacter:String, songColor:FlxColor)
+	public function new(song:String, week:Int, songCharacter:String, songColor:FlxColor, ?tagLine:String)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
 		this.songColor = songColor;
+		this.tagLine = tagLine;
 	}
 }
