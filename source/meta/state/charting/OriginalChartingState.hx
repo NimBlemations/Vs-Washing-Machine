@@ -41,6 +41,7 @@ using StringTools;
 
 /**
 	In case you dont like the forever engine chart editor, here's the base game one instead.
+	(As if the Forever Engine chart editor does much.)
 **/
 class OriginalChartingState extends MusicBeatState
 {
@@ -185,6 +186,8 @@ class OriginalChartingState extends MusicBeatState
 
 		add(curRenderedNotes);
 		add(curRenderedSustains);
+		
+		updateHeads();
 	}
 
 	function addSongUI():Void
@@ -485,6 +488,7 @@ class OriginalChartingState extends MusicBeatState
 					tempBpm = Std.int(nums.value);
 					Conductor.mapBPMChanges(_song);
 					Conductor.changeBPM(Std.int(nums.value));
+					resortNotes();
 				case 'note_susLength': // STOP POSTING ABOUT AMONG US
 					curSelectedNote[2] = nums.value; // change the currently selected note's length
 					updateGrid(); // oh btw I know sus stands for sustain it just bothers me
@@ -849,17 +853,17 @@ class OriginalChartingState extends MusicBeatState
 		updateHeads();
 	}
 
-	function updateHeads():Void
+	function updateHeads():Void // Changed to Thump Engine solution, don't know why this was overlooked.
 	{
 		if (check_mustHitSection.checked)
 		{
-			leftIcon.animation.play(_song.player1);
-			rightIcon.animation.play(_song.player2);
+			leftIcon.setPosition(0, -100);
+			rightIcon.setPosition(gridBG.width / 2, -100);
 		}
 		else
 		{
-			leftIcon.animation.play(_song.player2);
-			rightIcon.animation.play(_song.player1);
+			leftIcon.setPosition(gridBG.width / 2, -100);
+			rightIcon.setPosition(0, -100);
 		}
 	}
 
@@ -1011,14 +1015,33 @@ class OriginalChartingState extends MusicBeatState
 		updateNoteUI();
 	}
 
-	function deleteNote(note:Note):Void
+	function deleteNote(note:Note, ?allFind:Bool = false):Void
 	{
-		for (i in _song.notes[curSection].sectionNotes)
+		if (allFind) // I am too lazy for this shit
 		{
-			if (i[0] == note.strumTime && i[1] % 4 == note.noteData)
+			var sectionCount:Int = 0;
+			for (i in _song.notes)
 			{
-				FlxG.log.add('FOUND EVIL NUMBER');
-				_song.notes[curSection].sectionNotes.remove(i);
+				for (j in i.sectionNotes)
+				{
+					if (j[0] == note.strumTime && j[1] % 4 == note.noteData)
+					{
+						FlxG.log.add('FOUND EVIL NUMBER FROM ALL');
+						_song.notes[sectionCount].sectionNotes.remove(j);
+					}
+				}
+				sectionCount++;
+			}
+		}
+		else
+		{
+			for (i in _song.notes[curSection].sectionNotes)
+			{
+				if (i[0] == note.strumTime && i[1] % 4 == note.noteData)
+				{
+					FlxG.log.add('FOUND EVIL NUMBER');
+					_song.notes[curSection].sectionNotes.remove(i);
+				}
 			}
 		}
 
@@ -1040,6 +1063,78 @@ class OriginalChartingState extends MusicBeatState
 		}
 
 		updateGrid();
+	}
+	
+	/**
+	 * This is to resort notes in sections that have been shifted due to BPM, sometimes being off course.
+	 * I'm a bit tired of charting incorrectly.
+	 */
+	function resortNotes()
+	{
+		var sectionDurations:Array<Float> = [];
+		
+		{
+			trace("Sorting notes!");
+			var daBPM:Float = _song.bpm;
+			var daPos:Float = 0;
+			for (i in _song.notes)
+			{
+				if (i.changeBPM)
+				{
+					daBPM = i.bpm;
+				}
+				daPos += 4 * (1000 * 60 / daBPM);
+				sectionDurations.push(daPos);
+			}
+		}
+		
+		var sectionCount:Int = 0;
+		var noteBuffer:Array<Dynamic> = [];
+		for (i in _song.notes)
+		{
+			for (j in i.sectionNotes)
+			{
+				var minSection:Int = 0;
+				var durationCount:Int = 0;
+				for (duration in sectionDurations)
+				{
+					if (j[0] > duration)
+					{
+						minSection = durationCount + 1;
+					}
+					durationCount++;
+				}
+				noteBuffer.push([sectionCount, minSection, [j[0], j[1], j[2], j[3], j[4], j[5]]]);
+			}
+			sectionCount++;
+		}
+		
+		
+		for (buffer in noteBuffer)
+		{
+			if (buffer[0] != buffer[1])
+			{
+				var sectionCount:Int = 0;
+				for (i in _song.notes)
+				{
+					for (j in i.sectionNotes)
+					{
+						if (j[0] == buffer[2][0] && j[1] % 4 == buffer[2][1] % 4)
+						{
+							_song.notes[sectionCount].sectionNotes.remove(j);
+							// trace('removed old from ${buffer[0]}!');
+						}
+					}
+					sectionCount++;
+				}
+				_song.notes[buffer[1]].sectionNotes.push(buffer[2]);
+				// trace('pushed new to ${buffer[1]}!');
+			}
+			#if debug
+			else
+				trace("don't repeat note!");
+			#end
+		}
 	}
 
 	private function addNote():Void
